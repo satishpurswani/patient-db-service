@@ -26,23 +26,23 @@ public class PatientDataController implements IpatientDataController {
 	@Autowired
 	IPatientService patientService;
 
-	@PostMapping("/add")
+	@Override
 	public boolean savePatientData(@RequestBody Patient patientDetails) {
 		boolean status = patientService.savePatientInformation(patientDetails);
 		return status;
 	}
 
-	@PostMapping("/addPatients/")
+	@Override
 	public List<Patient> saveAllPatients(@RequestBody List<Patient> patientDetails) {
 		return patientService.saveAll(patientDetails);
 	}
 
-	@GetMapping("/{patientId}")
+	@Override
 	public Patient getPatientDetails(@PathVariable("patientId") Long id) {
 		return patientService.getByPatientId(id).orElse(null);
 	}
 
-	@DeleteMapping("/remove/{patientId}")
+	@Override
 	public void removePatientDetails(@PathVariable("patientId") Long id) {
 		try {
 			patientService.deleteByID(id);
@@ -51,14 +51,18 @@ public class PatientDataController implements IpatientDataController {
 		}
 	}
 
-	@PutMapping("/update/{patientId}")
+	@Override
 	public boolean updateExistingPatient(@PathVariable("patientId") Long id, @RequestBody Patient patientDetails) {
 		return patientService.updatePatient(id, patientDetails);
 	}
 
-	@GetMapping("/search") 
+	@Override
 	public List<Patient> searchPatient(@RequestBody Patient patientDetails){
 		return (patientDetails==null) ?  null :  patientService.searchPatientByIdAndNameAndAgeAndGenderAndAccessionNumberAndDOB(patientDetails);
 	  }
 
+	@Override
+	public boolean checkPatientAvailability(@RequestBody List<Patient> patientDetails) {
+		return patientService.isPatientAvailable(patientDetails);
+	}
 }

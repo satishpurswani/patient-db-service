@@ -24,4 +24,5 @@ public interface IPatientService {
 
 	List<Patient> searchPatientByIdAndNameAndAgeAndGenderAndAccessionNumberAndDOB(Patient patientDetails);
 
+	boolean isPatientAvailable(List<Patient> patients);
 }

@@ -5,6 +5,7 @@ import java.time.Month;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -52,6 +53,12 @@ public class PatientService implements IPatientService{
 	
 	public Optional<Patient> getByPatientId(Long id) {
 		return ipatientRepository.findById(id);
+	}
+	
+	public boolean isPatientAvailable(List<Patient> patients) {
+		List<Long> patientdetails= patients.stream().map(p->p.getId()).sorted().collect(Collectors.toList());
+		List<Long> resp_patientdetails=ipatientRepository.findAllById(patientdetails).stream().map(p->p.getId()).sorted().collect(Collectors.toList());
+		return patientdetails.equals(resp_patientdetails);
 	}
 
 	public boolean updatePatient(Long id, Patient patientDetails) {
